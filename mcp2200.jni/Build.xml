@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ====================================================================== 
+     2012.09.06. 12:53:53                                                        
+
+     project    
+     Create a jar file release
+                   
+     balazs.grill                                                                
+     ====================================================================== -->
+<project name="project" default="Release">
+    <description>
+            Create a jar file release
+    </description>
+
+    <!-- ================================= 
+          target: Release              
+         ================================= -->
+    <target name="Release" depends="jar" description="Create a jar file release">
+        <echo>Done.</echo>
+    </target>
+
+    <!-- - - - - - - - - - - - - - - - - - 
+          target: jar                      
+         - - - - - - - - - - - - - - - - - -->
+    <target name="jar">
+    	<jar destfile="mcp2200-jni.jar" basedir="bin">
+    		<manifest>
+    			<attribute name="Implementation-Title" value="MCP2200 user mode driver JNI interface"/>
+    			<attribute name="Implementation-Version" value="0.1"/>
+    		</manifest>
+    	</jar>
+    </target>
+
+</project>
