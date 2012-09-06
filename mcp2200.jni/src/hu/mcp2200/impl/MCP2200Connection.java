@@ -4,6 +4,7 @@
 package hu.mcp2200.impl;
 
 import hu.mcp2200.IMCP2200Connection;
+import hu.mcp2200.IMCP2200Device;
 import hu.mcp2200.MCP2200Configuration;
 import hu.mcp2200.MCP2200Exception;
 import hu.mcp2200.MCP2200JNI;
@@ -16,12 +17,15 @@ public class MCP2200Connection implements IMCP2200Connection {
 
 	private final int connectionID;
 	
+	private final MCP2200Device device;
+	
 	/**
 	 * @throws MCP2200Exception 
 	 * 
 	 */
-	public MCP2200Connection(int index) throws MCP2200Exception {
-		this.connectionID = MCP2200JNI.getInstance().connect(index);
+	public MCP2200Connection(MCP2200Device device) throws MCP2200Exception {
+		this.device = device;
+		this.connectionID = MCP2200JNI.getInstance().connect(device.getIndex());
 		if (this.connectionID < 0) throw new MCP2200Exception(connectionID);
 	}
 
@@ -71,6 +75,11 @@ public class MCP2200Connection implements IMCP2200Connection {
 		int r = MCP2200JNI.getInstance().hid_read_ee(connectionID, address&0xFF);
 		if (r < 0) throw new MCP2200Exception(r);
 		return r&0xFF;
+	}
+
+	@Override
+	public IMCP2200Device getDevice() {
+		return getDevice();
 	}
 	
 }

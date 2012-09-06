@@ -21,4 +21,6 @@ public interface IMCP2200Connection {
 	
 	public int readEEPROM(int address) throws MCP2200Exception;
 	
+	public IMCP2200Device getDevice();
+	
 }

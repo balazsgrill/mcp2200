@@ -17,6 +17,10 @@ public class MCP2200Device implements IMCP2200Device {
 	private final int index;
 	private final int address;
 	
+	int getIndex() {
+		return index;
+	}
+	
 	public MCP2200Device(int index) {
 		this.index = index;
 		address = MCP2200JNI.getInstance().get_address(index);
@@ -43,7 +47,7 @@ public class MCP2200Device implements IMCP2200Device {
 	 */
 	@Override
 	public IMCP2200Connection connect() throws MCP2200Exception {
-		return new MCP2200Connection(index);
+		return new MCP2200Connection(this);
 	}
 
 }
