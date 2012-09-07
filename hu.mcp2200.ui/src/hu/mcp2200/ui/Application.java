@@ -9,11 +9,19 @@ import org.eclipse.swt.widgets.Shell;
 
 public class Application implements IApplication {
 
+	private static Shell shell = null;
+	
+	public static Shell getShell() {
+		return shell;
+	}
+	
 	@Override
 	public Object start(IApplicationContext context) throws Exception {
 		Display display = new Display();
 		Shell shell = new Shell(display, SWT.SHELL_TRIM);
-		shell.setMinimumSize(600, 600);
+		Application.shell = shell;
+		shell.setText("MCP2200 GUI");
+		shell.setMinimumSize(450, 400);
 		
 		shell.setLayout(new FillLayout());
 		new ICDeviceControl(shell, SWT.DOUBLE_BUFFERED);

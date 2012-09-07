@@ -1,5 +1,9 @@
 package hu.mcp2200.ui;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.dialogs.ErrorDialog;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -20,6 +24,12 @@ public class Activator extends AbstractUIPlugin {
 	public Activator() {
 	}
 
+	public static void showError(Exception e){
+		Shell shell = Application.getShell();
+		ErrorDialog.openError(shell, "Error!", e.getLocalizedMessage(), 
+				new Status(IStatus.ERROR, PLUGIN_ID, e.getMessage()));
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)

@@ -3,6 +3,7 @@
  */
 package hu.mcp2200.ui.figures;
 
+import hu.mcp2200.ui.databinding.DeviceConnection;
 import hu.mcp2200.ui.databinding.DeviceLabel;
 
 import org.eclipse.core.databinding.observable.value.IObservableValue;
@@ -23,10 +24,15 @@ import org.eclipse.swt.widgets.Display;
 public class DeviceFigure extends Figure {
 
 	private final IObservableValue device = new WritableValue(SWTObservables.getRealm(Display.getDefault()));
-	private final IObservableValue label = new DeviceLabel(device);
+	private final IObservableValue connection = new DeviceConnection(device);
+	private final IObservableValue label = new DeviceLabel(connection);
 	
 	public DeviceFigure() {
 		
+	}
+	
+	public IObservableValue getConnection() {
+		return connection;
 	}
 	
 	public IObservableValue getDevice() {
@@ -36,6 +42,7 @@ public class DeviceFigure extends Figure {
 	@Override
 	protected void paintFigure(Graphics graphics) {
 		Rectangle r = getClientArea();
+		r = new Rectangle(r.x, r.y, r.width-1, r.height-1);
 		graphics.setForegroundColor(Display.getDefault().getSystemColor(SWT.COLOR_BLACK));
 		graphics.setBackgroundColor(Display.getDefault().getSystemColor(SWT.COLOR_GRAY));
 		graphics.fillRectangle(r);

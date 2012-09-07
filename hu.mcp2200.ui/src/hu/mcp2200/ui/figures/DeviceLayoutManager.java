@@ -16,15 +16,39 @@ public class DeviceLayoutManager extends AbstractLayout {
 
 	private static final float ratio = 0.6f;
 	
+	private static final int pins = 20;
+	
 	@Override
 	public void layout(IFigure container) {
 		Rectangle r = container.getClientArea();
+		int deviceheight = r.height-40;
+		int devicewidth = Math.round(deviceheight*ratio);
+		int devicex = (r.width-devicewidth)/2;
+		
 		for (Object f : container.getChildren()){
 			if (f instanceof DeviceFigure){
-				int height = r.height-40;
-				int width = Math.round(height*ratio);
-				Rectangle bounds = new Rectangle((r.width-width)/2, 20, width, height);
+				
+				Rectangle bounds = new Rectangle(devicex, 20, devicewidth, deviceheight);
 				((DeviceFigure) f).setBounds(bounds);
+			}
+			if (f instanceof PinFigure){
+				PinFigure figure = (PinFigure)f;
+				int id = figure.getPinDescriptor().getNum();
+				int rows = pins/2;
+				int row = id;
+				if (row > rows){
+					row = row-rows;
+					row = rows-row+1;
+					figure.setLeft(false);
+				}
+				int height = 20;
+				int width = 150;
+				int x = devicex-width+PinFigure.indent;
+				if (id > rows) x = devicex+devicewidth-PinFigure.indent;
+				int rowheight = deviceheight/rows;
+				int y = 20 + (rowheight*row) - (rowheight/2);
+				Rectangle bounds = new Rectangle(x, y, width, height);
+				figure.setBounds(bounds);
 			}
 		}
 	}
