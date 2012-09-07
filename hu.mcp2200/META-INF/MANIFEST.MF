@@ -4,5 +4,9 @@ Bundle-Name: MCP2200 User-mode driver
 Bundle-SymbolicName: hu.mcp2200
 Bundle-Version: 0.1.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Bundle-ClassPath: mcp2200-jni.jar
+Bundle-ClassPath: mcp2200-jni.jar,
+ .
 Export-Package: hu.mcp2200
+Bundle-ActivationPolicy: lazy
+Require-Bundle: org.eclipse.core.runtime
+Bundle-Activator: hu.mcp2200.activator.MCP2200Activator
