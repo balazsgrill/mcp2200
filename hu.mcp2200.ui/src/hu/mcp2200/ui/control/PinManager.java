@@ -44,6 +44,12 @@ public class PinManager {
 		connection.addValueChangeListener(listener);
 	}
 	
+	private void updateConfig() throws MCP2200Exception{
+		if (connection != null){
+			connection.configure(config);
+		}
+	}
+	
 	public boolean isAlt(int id){
 		switch(id){
 		case 0: return config.GP0_Suspend;
@@ -55,12 +61,40 @@ public class PinManager {
 		}
 	}
 	
+	public void setPinMode(int id, boolean alt, boolean input) throws MCP2200Exception{
+		switch(id){
+		case 0: config.GP0_Suspend = alt;
+		case 1: config.GP1_USBConfig = alt;
+		case 6: config.GP6_RxLed = alt;
+		case 7: config.GP7_TxLed = alt;
+		}
+		config.GPx_input[id] = input;
+		updateConfig();
+	}
+	
 	public boolean isInput(int id){
 		return config.GPx_input[id];
 	}
 	
+	public void setInput(int id, boolean input) throws MCP2200Exception{
+		config.GPx_input[id] = input;
+		updateConfig();
+	}
+	
+	public void setState(int id, boolean state) throws MCP2200Exception {
+		config.GPx_default[id] = state;
+		if (connection != null){
+			if (state){
+				connection.setPin(id);
+			}else{
+				connection.clearPin(id);
+			}
+		}
+	}
+	
 	public boolean getState(int id){
-		return false;
+		//TODO read IO
+		return config.GPx_default[id];
 	}
 	
 }

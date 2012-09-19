@@ -39,5 +39,18 @@ public class UnControllablePinDescriptor implements IPinDescriptor {
 	public boolean getState() {
 		return false;
 	}
+
+	@Override
+	public void switchState() {
+	}
+	
+	@Override
+	public Object[] getModes() {
+		return null;
+	}
+	
+	@Override
+	public void setMode(Object mode) {
+	}
 	
 }

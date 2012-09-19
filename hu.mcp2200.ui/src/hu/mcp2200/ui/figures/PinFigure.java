@@ -29,7 +29,7 @@ public class PinFigure extends Figure {
 		this.left = left;
 	}
 	
-	public PinFigure(IPinDescriptor pindesc) {
+	public PinFigure(final IPinDescriptor pindesc) {
 		this.pindesc = pindesc;
 	}
 	
