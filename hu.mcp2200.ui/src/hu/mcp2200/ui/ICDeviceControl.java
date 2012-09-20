@@ -12,8 +12,6 @@ import hu.mcp2200.ui.figures.DeviceFigure;
 import hu.mcp2200.ui.figures.PinFigure;
 
 import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.LightweightSystem;
 import org.eclipse.draw2d.MouseEvent;
@@ -22,12 +20,12 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
-import org.eclipse.ui.dialogs.ElementListSelectionDialog;
-import org.eclipse.ui.dialogs.ISelectionStatusValidator;
+import org.eclipse.ui.dialogs.ListDialog;
 
 /**
  * @author balazs.grill
@@ -89,21 +87,13 @@ public class ICDeviceControl extends Canvas {
 				IFigure figure = root.findFigureAt(me.x, me.y);
 				if (figure instanceof DeviceFigure){
 					Object[] devices = MCP2200Manager.detectDevices().toArray();
-					ElementListSelectionDialog dialog = new ElementListSelectionDialog(getShell(), new DeviceLabelProvider());
-					dialog.setElements(devices);
+					ListDialog dialog = new ListDialog(getShell());
+					dialog.setContentProvider(new ArrayContentProvider());
+					dialog.setLabelProvider(new DeviceLabelProvider());
+					dialog.setInput(devices);
 					dialog.setTitle("Select device");
-					dialog.setValidator(new ISelectionStatusValidator() {
-						
-						@Override
-						public IStatus validate(Object[] selection) {
-							if (selection.length == 1 && selection[0] instanceof IMCP2200Device){
-								return Status.OK_STATUS;
-							}
-							return new Status(IStatus.ERROR, Activator.PLUGIN_ID, "A device must be selected");
-						}
-					});
 					if (dialog.open() == Window.OK){
-						Object o = dialog.getFirstResult();
+						Object o = dialog.getResult()[0];
 						if (o instanceof IMCP2200Device){
 							IObservableValue deviceValue = ((DeviceFigure) figure).getDevice();
 							deviceValue.setValue(o);
