@@ -79,7 +79,7 @@ public class MCP2200Connection implements IMCP2200Connection {
 
 	@Override
 	public IMCP2200Device getDevice() {
-		return getDevice();
+		return device;
 	}
 	
 }
