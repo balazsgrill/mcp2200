@@ -12,3 +12,5 @@ You can find the following projects in this repo:
 * hu.mcp2200.linux.x86: Plug-in fragment for Linux-x86 platform-specific binaries (coming soon)
 * hu.mcp2200.ui: Eclipse application - GUI to control an MCP2200 device
 
+Getting started:
+https://gist.github.com/3754350
