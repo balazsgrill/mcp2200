@@ -10,7 +10,7 @@
 	
 	<property name="includes_win32">-Iinclude/win32 "-IC:\Program Files\Java\jdk1.7.0_01\include" "-IC:\Program Files\Java\jdk1.7.0_01\include\win32"</property>
 	
-	<property name="includes_unix">-I/usr/include/libusb-1.0</property>
+	<property name="includes_unix">-I/usr/include/libusb-1.0 -I/usr/lib/jvm/java-1.6.0-openjdk-i386/include</property>
 	
 	<property name="libs_windows">lib/win32/libusb-1.0.a</property>
 	
@@ -31,6 +31,14 @@
 	<condition property="extension_dll" value=".so">
 		<os family="unix"/>
 	</condition>	
+	
+	<condition property="linkerOptions" value="-Wl,--kill-at">
+		<os family="windows"/>
+	</condition>
+	
+	<condition property="linkerOptions" value="">
+		<os family="unix"/>
+	</condition>
 	
 	<condition property="includes" value="${includes_win32}">
 		<os family="windows"/>
@@ -86,7 +94,7 @@
 		<exec executable="gcc">
 			<arg value="-Wall"/>
 			<arg value="-shared"/>
-			<arg value="-Wl,--kill-at"/>
+			<arg line="${linkerOptions}"/>
 			<arg value="-o"/><arg value="bin/mcp2200-jni${extension_dll}"/>
 			<arg value="bin/mcp2200.o"/>
 			<arg value="bin/mcp2200-jni.o"/>
