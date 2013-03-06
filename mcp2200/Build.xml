@@ -8,7 +8,7 @@
         <echo>done.</echo>
     </target>
 	
-	<property name="includes_win32">-Iinclude/win32 "-IC:\Program Files\Java\jdk1.7.0_01\include" "-IC:\Program Files\Java\jdk1.7.0_01\include\win32"</property>
+	<property name="includes_win32">-Iinclude/win32 "-IC:\Program Files\Java\jdk1.7.0_10\include" "-IC:\Program Files\Java\jdk1.7.0_10\include\win32"</property>
 	
 	<property name="includes_unix">-I/usr/include/libusb-1.0 -I/usr/lib/jvm/java-1.6.0-openjdk-i386/include</property>
 	

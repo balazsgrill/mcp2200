@@ -125,3 +125,37 @@ JNIEXPORT jint JNICALL Java_hu_mcp2200_MCP2200JNI_mcp2200_1hid_1read_1io
 	if (r != 0) return r;
 	return result;
 }
+
+/*
+ * Class:     hu_mcp2200_MCP2200JNI
+ * Method:    send
+ * Signature: (I[B)I
+ */
+JNIEXPORT jint JNICALL Java_hu_mcp2200_MCP2200JNI_send
+  (JNIEnv * env, jobject this, jint connectionID, jbyteArray data){
+	jsize size = (*env)->GetArrayLength(env, data);
+	jbyte *bdata = (*env)->GetByteArrayElements(env, data, 0);
+	int r = mcp2200_send(connectionID, (uint8_t*)bdata, size);
+	(*env)->ReleaseByteArrayElements(env, data, bdata, JNI_ABORT);
+	return r;
+}
+
+/*
+ * Class:     hu_mcp2200_MCP2200JNI
+ * Method:    receive
+ * Signature: (I[B)I
+ */
+JNIEXPORT jint JNICALL Java_hu_mcp2200_MCP2200JNI_receive
+  (JNIEnv * env, jobject this, jint connectionID, jbyteArray data){
+	jsize size = (*env)->GetArrayLength(env, data);
+	int received = 0;
+	jbyte *bdata = (*env)->GetByteArrayElements(env, data, 0);
+	int r = mcp2200_receive(connectionID, (uint8_t*)bdata, size, &received);
+	if (r != 0){
+		(*env)->ReleaseByteArrayElements(env, data, bdata, JNI_ABORT);
+		return r;
+	}else{
+		(*env)->ReleaseByteArrayElements(env, data, bdata, JNI_COMMIT);
+		return received;
+	}
+}
