@@ -11,6 +11,7 @@
 
 #define MCP2200_MAX_DEVICE_NUM 10
 #define MCP2200_USE_CONFIGURATION 0
+
 #define MCP2200_HID_INTERFACE 2
 #define MCP2200_HID_REPORT_SIZE 16
 #define MCP2200_HID_TRANSFER_TIMEOUT 5000
@@ -23,6 +24,12 @@
 
 #define MCP2200_HID_ENDPOINT_IN 0x81
 #define MCP2200_HID_ENDPOINT_OUT 0x01
+
+#define MCP2200_CDC_INTERFACE 		1
+#define MCP2200_CDC_ENDPOINT_IN 	0x83
+#define MCP2200_CDC_BUFFERSIZE_IN 	64u
+#define MCP2200_CDC_ENDPOINT_OUT 	0x03
+#define MCP2200_CDC_BUFFERSIZE_OUT 	32u
 
 static libusb_device* device_list[MCP2200_MAX_DEVICE_NUM];
 static int device_list_count = -1;
@@ -203,6 +210,71 @@ int mcp2200_hid_set_clear_output(int connectionID, uint8_t set_bmap, uint8_t clr
 	return 0;
 }
 
+int mcp2200_receive(int connectionID, uint8_t *data, int length, int* received){
+	if (connectionID >= MCP2200_MAX_DEVICE_NUM) return MCP2200_INVALID_CONNECTION_ID;
+	if (connection_list[connectionID] == NULL) return MCP2200_INVALID_CONNECTION_ID;
+
+	int index = 0;
+	int remain = length;
+	int t = 1;
+	int r = 0;
+	int l = 0;
+
+	while((remain > 0) && (t > 0)){
+		t = 0;
+		l = remain;
+		if (l > MCP2200_CDC_BUFFERSIZE_IN){
+			l = MCP2200_CDC_BUFFERSIZE_IN;
+		}
+		r = libusb_bulk_transfer(connection_list[connectionID], MCP2200_CDC_ENDPOINT_IN, &(data[index]), l, &t, MCP2200_HID_TRANSFER_TIMEOUT);
+		if (r != 0){
+			if (r == LIBUSB_ERROR_NO_DEVICE){
+				//Device is disconnected
+				closeDevice(connectionID);
+			}
+			return r;
+		}else{
+			index += t;
+			remain -= t;
+		}
+	}
+
+	*received = index;
+	return 0;
+}
+
+int mcp2200_send(int connectionID, uint8_t *data, int length){
+	if (connectionID >= MCP2200_MAX_DEVICE_NUM) return MCP2200_INVALID_CONNECTION_ID;
+	if (connection_list[connectionID] == NULL) return MCP2200_INVALID_CONNECTION_ID;
+
+	int t = 0;
+	int r = 0;
+	int index = 0;
+	int remain = length;
+	int l = 0;
+
+	while(remain > 0){
+		t = 0;
+		l = remain;
+		if (l > MCP2200_CDC_BUFFERSIZE_OUT){
+			l = MCP2200_CDC_BUFFERSIZE_OUT;
+		}
+		r = libusb_bulk_transfer(connection_list[connectionID], MCP2200_CDC_ENDPOINT_OUT, &(data[index]), l, &t, MCP2200_HID_TRANSFER_TIMEOUT);
+		if (r != 0){
+			if (r == LIBUSB_ERROR_NO_DEVICE){
+				//Device is disconnected
+				closeDevice(connectionID);
+			}
+			return r;
+		}else{
+			index += t;
+			remain -= t;
+		}
+	}
+
+	return 0;
+}
+
 static void free_list(){
 	if (device_list_count > 0){
 		int i;
@@ -286,6 +358,7 @@ int mcp2200_connect(int index){
 			// Detach kernel driver, if any.
 			// The result of this call is ignored
 			libusb_detach_kernel_driver(connection_list[conID], MCP2200_HID_INTERFACE);
+			libusb_detach_kernel_driver(connection_list[conID], MCP2200_CDC_INTERFACE);
 
 			// Claim HID interface
 			r = libusb_claim_interface(connection_list[conID], MCP2200_HID_INTERFACE);
@@ -293,6 +366,12 @@ int mcp2200_connect(int index){
 				closeDevice(conID);
 				return r;
 			}
+			r = libusb_claim_interface(connection_list[conID], MCP2200_CDC_INTERFACE);
+			if (r != 0){
+				closeDevice(conID);
+				return r;
+			}
+
 			return conID;
 		}
 	}
@@ -302,8 +381,9 @@ int mcp2200_connect(int index){
 void mcp2200_disconnect(int connectionID){
 	if (connectionID < MCP2200_MAX_DEVICE_NUM){
 		if (connection_list[connectionID] != NULL){
-			//Release HID interface
+			//Release interfaces
 			libusb_release_interface(connection_list[connectionID], MCP2200_HID_INTERFACE);
+			libusb_release_interface(connection_list[connectionID], MCP2200_CDC_INTERFACE);
 			//Close device
 			closeDevice(connectionID);
 		}

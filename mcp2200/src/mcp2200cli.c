@@ -7,6 +7,7 @@
 
 #include <stdio.h>
 #include <sys/types.h>
+#include <windows.h>
 
 #include "mcp2200.h"
 
@@ -59,7 +60,7 @@ int main(int argc, char** argv){
 
 
 		int i;
-		for(i=0;i<=255;i++){
+/*		for(i=0;i<=255;i++){
 			uint8_t address = (uint8_t)(i&0xFFu);
 			r = writeEnsure(connectionID, address, address, 1);
 			if (r != 0){
@@ -78,16 +79,16 @@ int main(int argc, char** argv){
 			}else{
 				printf("%d: %d\n",i,data);
 			}
-		}
+		}*/
 
-		/*for(i=0;i<100;i++){
+		for(i=0;i<100;i++){
 			printf("Set\n");
 			mcp2200_hid_set_clear_output(connectionID, 0xFFu, 0u);
-			sleep(1);
+			Sleep(1000);
 			printf("Clear\n");
 			mcp2200_hid_set_clear_output(connectionID, 0u, 0xFFu);
-			sleep(1);
-		}*/
+			Sleep(1000);
+		}
 
 	}else{
 		printf("Multiple devices, couldn't choose..");

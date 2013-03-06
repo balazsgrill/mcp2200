@@ -80,4 +80,14 @@ extern int mcp2200_hid_read_ee(int connectionID, uint8_t address, uint8_t *data)
  */
 extern int mcp2200_hid_read_io(int connectionID, uint8_t *data);
 
+/**
+ * Receive data from UART channel
+ */
+extern int mcp2200_receive(int connectionID, uint8_t *data, int length, int* received);
+
+/**
+ * Send data on UART channel
+ */
+extern int mcp2200_send(int connectionID, uint8_t *data, int length);
+
 #endif /* MCP2200_H_ */
