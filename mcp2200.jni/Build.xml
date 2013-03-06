@@ -19,6 +19,14 @@
         <echo>Done.</echo>
     </target>
 
+	
+	
+	<target name="jni_header" depends="jar">
+		<javah outputfile="mcp2200-jni.h" classpath="*.jar">
+			<class name="hu.mcp2200.MCP2200JNI" />
+		</javah>
+	</target>
+	
     <!-- - - - - - - - - - - - - - - - - - 
           target: jar                      
          - - - - - - - - - - - - - - - - - -->
