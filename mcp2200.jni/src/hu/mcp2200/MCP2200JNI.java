@@ -53,4 +53,7 @@ public final class MCP2200JNI {
 	
 	public native int hid_read_io(int connectionID);
 	
+	public native int send(int connectionID, byte[] data);
+	
+	public native int receive(int connectionID, byte[] data);
 }
