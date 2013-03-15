@@ -39,10 +39,7 @@ it. It is simple and lightweight.
 Is it ready?
 ============
 
-No, it's not. Currently, the driver provides working interface for a very small fragment of the 
-MCP2200 functionality. A couple of HID commands work (for example GPIO control), others are implemented
-but does not seem to work properly (EEPROM commands), and the CDC interface is not even started. To be honest,
-I just need GPIO for my current project therefore it is the only feature I've spent enough time on to get it
-working.
+No, it's not. All of the device functions has been implemented, but it needs extended testing. You are 
+encuraged to try and play with it (and provide feedback) but don't expect a production-stable quality.
 
 
