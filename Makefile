@@ -35,7 +35,7 @@ libudev:
 	sudo apt-get install libudev-dev
 
 libc-32bit:
-	sudo apt-get install libc6-dev-i386 libudev-dev:i386 ia32-libs ia32-libs-multiarch
+	sudo apt-get install libc6-dev-i386 libudev-dev:i386 ia32-libs gcc-multilib
 
 libusbx-latest: 
 	mkdir -p libusbx
