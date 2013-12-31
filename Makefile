@@ -1,5 +1,10 @@
 LIBUSBXVERSION=1.0.17
 INCLUDE=-Ilibusbx/libusbx-$(LIBUSBXVERSION)/libusb
+ifeq ($(CC),i586-mingw32msvc-gcc)
+LIBS=
+else
+LIBS=-lrt -lpthread -ludev
+endif
 
 all: bin/mcp2200cli
 
@@ -15,7 +20,7 @@ bin/mcp2200cli.o: bin src/mcp2200cli.c
 	$(CC) $(INCLUDE) -c -Wall src/mcp2200cli.c -o bin/mcp2200cli.o
 
 bin/mcp2200cli: bin/mcp2200.o bin/mcp2200cli.o
-	$(CC) -o bin/mcp2200cli bin/mcp2200.o bin/mcp2200cli.o libusbx/libusbx-$(LIBUSBXVERSION)/libusb/.libs/libusb-1.0.a -lrt -lpthread -ludev
+	$(CC) -o bin/mcp2200cli bin/mcp2200.o bin/mcp2200cli.o libusbx/libusbx-$(LIBUSBXVERSION)/libusb/.libs/libusb-1.0.a $(LIBS)
 
 libudev:
 	sudo apt-get install libudev-dev
