@@ -7,7 +7,6 @@
 
 #include <stdio.h>
 #include <sys/types.h>
-#include <windows.h>
 
 #include "mcp2200.h"
 
@@ -84,10 +83,10 @@ int main(int argc, char** argv){
 		for(i=0;i<100;i++){
 			printf("Set\n");
 			mcp2200_hid_set_clear_output(connectionID, 0xFFu, 0u);
-			Sleep(1000);
+			//Sleep(1000);
 			printf("Clear\n");
 			mcp2200_hid_set_clear_output(connectionID, 0u, 0xFFu);
-			Sleep(1000);
+			//Sleep(1000);
 		}
 
 	}else{
