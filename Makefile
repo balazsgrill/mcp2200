@@ -4,17 +4,18 @@ ifeq ($(CC),i586-mingw32msvc-gcc)
 LIBS=
 else
 LIBS=-lrt -lpthread -ludev
-endif
-
 ifeq ($(ARCH),64)
 MARCH=-m64
+DEPS=
 else
 MARCH=-m32
+DEPS=libc-32bit
+endif
 endif
 
 all: bin/mcp2200cli
 
-deps: libudev libusbx-latest install-compiler
+deps: libudev libusbx-latest install-compiler $(DEPS)
 
 bin/mcp2200.o: bin src/mcp2200.c src/mcp2200.h
 	$(CC) $(MARCH) $(INCLUDE) -c -Wall src/mcp2200.c -o bin/mcp2200.o
@@ -31,12 +32,15 @@ bin/mcp2200cli: bin/mcp2200.o bin/mcp2200cli.o
 libudev:
 	sudo apt-get install libudev-dev
 
+libc-32bit:
+	sudo apt-get install libc6-dev-i386 libudev-dev-i386
+
 libusbx-latest: 
 	mkdir -p libusbx
 	wget "http://sourceforge.net/projects/libusbx/files/releases/$(LIBUSBXVERSION)/source/libusbx-$(LIBUSBXVERSION).tar.bz2/download" -O libusbx/libusbx.tar.bz2
 	bzip2 -f -d libusbx/libusbx.tar.bz2
 	cd libusbx; tar -xvf libusbx.tar
-	cd libusbx/libusbx-$(LIBUSBXVERSION); ./configure
+	cd libusbx/libusbx-$(LIBUSBXVERSION); ./configure --host
 	cd libusbx/libusbx-$(LIBUSBXVERSION); make
 
 install-compiler:
