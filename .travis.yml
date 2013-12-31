@@ -5,6 +5,10 @@ compiler:
  - gcc
  - i586-mingw32msvc-gcc
 
+env:
+ - ARCH=32
+ - ARCH=64
+
 matrix:
   allow_failures:
     env: TOOL="i586-mingw32msvc-gcc"

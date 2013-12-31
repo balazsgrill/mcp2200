@@ -6,21 +6,27 @@ else
 LIBS=-lrt -lpthread -ludev
 endif
 
+ifeq ($(ARCH),64)
+MARCH=-m64
+else
+MARCH=-m32
+endif
+
 all: bin/mcp2200cli
 
 deps: libudev libusbx-latest install-compiler
 
 bin/mcp2200.o: bin src/mcp2200.c src/mcp2200.h
-	$(CC) $(INCLUDE) -c -Wall src/mcp2200.c -o bin/mcp2200.o
+	$(CC) $(MARCH) $(INCLUDE) -c -Wall src/mcp2200.c -o bin/mcp2200.o
 
 bin:
 	mkdir bin
 
 bin/mcp2200cli.o: bin src/mcp2200cli.c
-	$(CC) $(INCLUDE) -c -Wall src/mcp2200cli.c -o bin/mcp2200cli.o
+	$(CC) $(MARCH) $(INCLUDE) -c -Wall src/mcp2200cli.c -o bin/mcp2200cli.o
 
 bin/mcp2200cli: bin/mcp2200.o bin/mcp2200cli.o
-	$(CC) -o bin/mcp2200cli bin/mcp2200.o bin/mcp2200cli.o libusbx/libusbx-$(LIBUSBXVERSION)/libusb/.libs/libusb-1.0.a $(LIBS)
+	$(CC) $(MARCH) -o bin/mcp2200cli bin/mcp2200.o bin/mcp2200cli.o libusbx/libusbx-$(LIBUSBXVERSION)/libusb/.libs/libusb-1.0.a $(LIBS)
 
 libudev:
 	sudo apt-get install libudev-dev
