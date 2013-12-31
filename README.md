@@ -8,9 +8,9 @@ What?
 
 This project aims to provide an easy-to-use and simple install-less driver for MCP2200. Basically, it is
 a C library using libusbx-1.0 (http://libusbx.org), providing simple API which can access the 
-functions of the device. On top of that, there is a JNI library providing the same for JAVA applications.
-To make it complete, Eclipse developers can make use of the Eclipse wrapper plug-in (along with the OS-specific
-binaries as fragments) in RCP applications.
+functions of the device. 
+
+On top of that, there is a JNI library providing the same for JAVA applications: https://github.com/balazsgrill/mcp2200-jni To make it complete, Eclipse developers can make use of the Eclipse wrapper plug-ins (along with the OS-specific binaries as fragments) in RCP applications: https://github.com/balazsgrill/mcp2200-eclipse
 
 Getting started:
 https://gist.github.com/3754350
