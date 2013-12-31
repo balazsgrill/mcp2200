@@ -11,4 +11,4 @@ env:
 
 matrix:
   allow_failures:
-    env: TOOL="i586-mingw32msvc-gcc"
+    - env: TOOL="i586-mingw32msvc-gcc"
