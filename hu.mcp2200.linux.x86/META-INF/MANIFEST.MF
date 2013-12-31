@@ -1,8 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: MCP2200 User-mode driver linux.x86 binaries
-Bundle-SymbolicName: hu.mcp2200.linux.x86
-Bundle-Version: 0.1.0.qualifier
-Fragment-Host: hu.mcp2200;bundle-version="0.1.0"
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Eclipse-PlatformFilter: (& (osgi.os=linux) (osgi.arch=x86))
