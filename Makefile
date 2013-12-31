@@ -3,7 +3,7 @@ INCLUDE=-Ilibusbx/libusbx-$(LIBUSBXVERSION)/libusb
 
 all: bin/mcp2200cli
 
-deps: libudev libusbx-latest
+deps: libudev libusbx-latest install-compiler
 
 bin/mcp2200.o: bin src/mcp2200.c src/mcp2200.h
 	$(CC) $(INCLUDE) -c -Wall src/mcp2200.c -o bin/mcp2200.o
@@ -28,4 +28,9 @@ libusbx-latest:
 	cd libusbx/libusbx-$(LIBUSBXVERSION); ./configure
 	cd libusbx/libusbx-$(LIBUSBXVERSION); make
 
-	
+install-compiler:
+ifeq ($(CC),i586-mingw32msvc-gcc)
+	sudo apt-get install gcc-mingw32
+else
+	echo "gcc is part of the basic installation"
+endif

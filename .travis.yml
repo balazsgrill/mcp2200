@@ -1,4 +1,6 @@
 language: c
 install: make deps
 script: make
-compiler: gcc
+compiler: 
+	- gcc
+	- i586-mingw32msvc-gcc
