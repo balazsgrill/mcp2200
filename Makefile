@@ -2,6 +2,7 @@ LIBUSBXVERSION=1.0.17
 INCLUDE=-Ilibusbx/libusbx-$(LIBUSBXVERSION)/libusb
 ifeq ($(CC),i586-mingw32msvc-gcc)
 LIBS=
+CONFIGURE=
 else
 LIBS=-lrt -lpthread -ludev
 ifeq ($(ARCH),64)
@@ -10,6 +11,7 @@ DEPS=
 else
 MARCH=-m32
 DEPS=libc-32bit
+CONFIGURE=--host=x86-unknown-linux-gnu
 endif
 endif
 
@@ -40,7 +42,7 @@ libusbx-latest:
 	wget "http://sourceforge.net/projects/libusbx/files/releases/$(LIBUSBXVERSION)/source/libusbx-$(LIBUSBXVERSION).tar.bz2/download" -O libusbx/libusbx.tar.bz2
 	bzip2 -f -d libusbx/libusbx.tar.bz2
 	cd libusbx; tar -xvf libusbx.tar
-	cd libusbx/libusbx-$(LIBUSBXVERSION); ./configure --host
+	cd libusbx/libusbx-$(LIBUSBXVERSION); ./configure $(CONFIGURE)
 	cd libusbx/libusbx-$(LIBUSBXVERSION); make
 
 install-compiler:
