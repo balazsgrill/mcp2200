@@ -11,7 +11,7 @@ DEPS=
 else
 MARCH=-m32
 DEPS=libc-32bit
-CONFIGURE=--target=i386-unknown-linux-gnu
+CONFIGURE=--target=i586-unknown-linux-gnu --host=i586-unknown-linux-gnu
 endif
 endif
 
@@ -42,7 +42,7 @@ libusbx-latest:
 	wget "http://sourceforge.net/projects/libusbx/files/releases/$(LIBUSBXVERSION)/source/libusbx-$(LIBUSBXVERSION).tar.bz2/download" -O libusbx/libusbx.tar.bz2
 	bzip2 -f -d libusbx/libusbx.tar.bz2
 	cd libusbx; tar -xvf libusbx.tar
-	cd libusbx/libusbx-$(LIBUSBXVERSION); CFLAGS=$(MARCH) ./configure $(CONFIGURE)
+	cd libusbx/libusbx-$(LIBUSBXVERSION); ./configure $(CONFIGURE)
 	cd libusbx/libusbx-$(LIBUSBXVERSION); make
 
 install-compiler:
