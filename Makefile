@@ -17,7 +17,7 @@ endif
 
 all: bin/mcp2200cli
 
-deps: libudev libusbx-latest install-compiler $(DEPS)
+deps: libudev $(DEPS) libusbx-latest install-compiler
 
 bin/mcp2200.o: bin src/mcp2200.c src/mcp2200.h
 	$(CC) $(MARCH) $(INCLUDE) -c -Wall src/mcp2200.c -o bin/mcp2200.o
