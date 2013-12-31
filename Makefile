@@ -42,8 +42,8 @@ libusbx-latest:
 	wget "http://sourceforge.net/projects/libusbx/files/releases/$(LIBUSBXVERSION)/source/libusbx-$(LIBUSBXVERSION).tar.bz2/download" -O libusbx/libusbx.tar.bz2
 	bzip2 -f -d libusbx/libusbx.tar.bz2
 	cd libusbx; tar -xvf libusbx.tar
-	cd libusbx/libusbx-$(LIBUSBXVERSION); ./configure $(CONFIGURE) CFLAGS=$(MARCH)
-	cd libusbx/libusbx-$(LIBUSBXVERSION); make
+	cd libusbx/libusbx-$(LIBUSBXVERSION); ./configure $(CONFIGURE) "CC=$(CC) $(MARCH)"
+	cd libusbx/libusbx-$(LIBUSBXVERSION)/libusb; make
 
 install-compiler:
 ifeq ($(CC),i586-mingw32msvc-gcc)
