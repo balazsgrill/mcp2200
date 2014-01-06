@@ -1,0 +1,12 @@
+#!/bin/sh
+
+if [ "$CC" == "gcc" ]
+then
+  sudo apt-get install libudev-dev
+elif [ "$CC" == "gcc -m32" ]
+then
+  sudo apt-get install libudev-dev libc6-dev-i386 libudev-dev:i386 gcc-multilib
+elif [ "$CC" == "i586-mingw32msvc-gcc" ]
+then
+  sudo apt-get install libudev-dev gcc-mingw32
+fi
