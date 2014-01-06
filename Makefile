@@ -1,11 +1,13 @@
 LIBUSBXVERSION=1.0.17
-INCLUDE=-Ilibusbx/libusbx-$(LIBUSBXVERSION)/libusb
+
 ifeq ($(CC),i586-mingw32msvc-gcc)
 WIN=TRUE
 LIBS=
 CONFIGURE=
+INCLUDE=-Ilibusbx/libusbx-$(LIBUSBXVERSION)/libusb
 else
 WIN=FALSE
+INCLUDE=-Ilibusbx/include/libusbx-1.0
 LIBS=-lrt -lpthread -ludev
 ifeq ($(CC),gcc)
 CONFIGURE=
