@@ -1,14 +1,8 @@
 language: c
-install: make deps
+install: ./installdeps
 script: make
 compiler: 
  - gcc
+ - "gcc -m32"
  - i586-mingw32msvc-gcc
 
-env:
- - ARCH=32
- - ARCH=64
-
-matrix:
-  allow_failures:
-    - env: TOOL="i586-mingw32msvc-gcc"
