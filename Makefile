@@ -22,7 +22,7 @@ bin/mcp2200.o: bin src/mcp2200.c src/mcp2200.h
 	$(CC) $(MARCH) $(INCLUDE) -c -Wall src/mcp2200.c -o bin/mcp2200.o
 
 bin:
-	mkdir bin
+	mkdir -p bin
 
 bin/mcp2200cli.o: bin src/mcp2200cli.c
 	$(CC) $(MARCH) $(INCLUDE) -c -Wall src/mcp2200cli.c -o bin/mcp2200cli.o
@@ -30,7 +30,7 @@ bin/mcp2200cli.o: bin src/mcp2200cli.c
 bin/mcp2200cli: bin/mcp2200.o bin/mcp2200cli.o
 	$(CC) $(MARCH) -o bin/mcp2200cli bin/mcp2200.o bin/mcp2200cli.o bin/libusb-1.0.a $(LIBS)
 
-libusbx-latest: 
+libusbx-latest: bin
 	mkdir -p libusbx
 ifeq ($(WIN),TRUE)
 	wget "http://sourceforge.net/projects/libusbx/files/releases/$(LIBUSBXVERSION)/binaries/libusbx-$(LIBUSBXVERSION)-win.7z/download" -O libusbx/libusbx.7z
