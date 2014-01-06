@@ -34,7 +34,7 @@ libusbx-latest: bin
 	mkdir -p libusbx
 ifeq ($(WIN),TRUE)
 	wget "http://sourceforge.net/projects/libusbx/files/releases/$(LIBUSBXVERSION)/binaries/libusbx-$(LIBUSBXVERSION)-win.7z/download" -O libusbx/libusbx.7z
-	7za e libusbx/libusbx.7z
+	7za x libusbx/libusbx.7z
 	cp libusbx/MinGW32/static/libusb-1.0.a bin/libusb-1.0.a
 else
 	wget "http://sourceforge.net/projects/libusbx/files/releases/$(LIBUSBXVERSION)/source/libusbx-$(LIBUSBXVERSION).tar.bz2/download" -O libusbx/libusbx.tar.bz2
