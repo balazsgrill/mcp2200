@@ -1,6 +1,6 @@
 language: c
 install: chmod +x installdeps && ./installdeps
-before-script: make libusbx-latest
+before_script: make libusbx-latest
 script: make
 compiler: 
  - gcc
