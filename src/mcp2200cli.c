@@ -10,21 +10,8 @@
 
 #include "mcp2200.h"
 
-static int writeEnsure(int connectionID, uint8_t address, uint8_t data, int retries){
-	int try = 0;
-	int r = 0;
-	uint8_t result = 0;
-	while(try < retries){
-		printf("Write trial %d\n",try);
-		r = mcp2200_hid_write_ee(connectionID, address, data);
-		if (r != 0) return r;
-		r = mcp2200_hid_read_ee(connectionID, address, &result);
-		if (r != 0) return r;
-		if (result == data) return 0;
-		try++;
-	}
-	return -200;
-}
+static uint8_t data[] = {5 , 5, 5, 5, 5}; 
+static int sendNum = 5;
 
 int main(int argc, char** argv){
 
@@ -59,35 +46,23 @@ int main(int argc, char** argv){
 
 
 		int i;
-/*		for(i=0;i<=255;i++){
-			uint8_t address = (uint8_t)(i&0xFFu);
-			r = writeEnsure(connectionID, address, address, 1);
-			if (r != 0){
-				printf("write error of %d: %d\n",address, r);
-			}else{
-				printf("Write %d is successful\n", address);
+		int j;
+		uint8_t rcv_data[32];
+
+		printf("Sending..\n");
+		r = mcp2200_send(connectionID, data, sendNum);
+		printf("result: %d\n", r);
+		
+		printf("Receive..\n");
+		r = mcp2200_receive(connectionID, rcv_data, 32, &i);
+		printf("result: %d %d\n", r, i);
+		if ( r == 0){
+			for(j = 0;j<i;j++){
+				printf("%d ",rcv_data[j]);
 			}
 		}
-
-		for(i=0;i<=255;i++){
-			uint8_t data;
-
-			r = mcp2200_hid_read_ee(connectionID, address, &data);
-			if (r != 0){
-				printf("read error of %d: %d\n",i, r);
-			}else{
-				printf("%d: %d\n",i,data);
-			}
-		}*/
-
-		for(i=0;i<100;i++){
-			printf("Set\n");
-			mcp2200_hid_set_clear_output(connectionID, 0xFFu, 0u);
-			//Sleep(1000);
-			printf("Clear\n");
-			mcp2200_hid_set_clear_output(connectionID, 0u, 0xFFu);
-			//Sleep(1000);
-		}
+		printf("\n");
+	
 
 	}else{
 		printf("Multiple devices, couldn't choose..");

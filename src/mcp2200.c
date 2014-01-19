@@ -31,6 +31,8 @@
 #define MCP2200_CDC_ENDPOINT_OUT 	0x03
 #define MCP2200_CDC_BUFFERSIZE_OUT 	32u
 
+#define MCP2200_CDC_TRANSFER_TIMEOUT 1
+
 static libusb_device* device_list[MCP2200_MAX_DEVICE_NUM];
 static int device_list_count = -1;
 static libusb_device_handle* connection_list[MCP2200_MAX_DEVICE_NUM];
@@ -226,14 +228,26 @@ int mcp2200_receive(int connectionID, uint8_t *data, int length, int* received){
 		if (l > MCP2200_CDC_BUFFERSIZE_IN){
 			l = MCP2200_CDC_BUFFERSIZE_IN;
 		}
-		r = libusb_bulk_transfer(connection_list[connectionID], MCP2200_CDC_ENDPOINT_IN, &(data[index]), l, &t, MCP2200_HID_TRANSFER_TIMEOUT);
+		r = libusb_bulk_transfer(connection_list[connectionID], MCP2200_CDC_ENDPOINT_IN, &(data[index]), l, &t, MCP2200_CDC_TRANSFER_TIMEOUT);
+		if (r == LIBUSB_ERROR_TIMEOUT){
+			index += t;
+			remain -= t;
+			r = 0;
+		}else
 		if (r != 0){
+			if (r == LIBUSB_ERROR_TIMEOUT){
+				index += t;
+				remain -= t;
+			}else
 			if (r == LIBUSB_ERROR_NO_DEVICE){
 				//Device is disconnected
 				closeDevice(connectionID);
+				return r;
+			}else{
+				return r;
 			}
-			return r;
-		}else{
+			
+		}else{ 
 			index += t;
 			remain -= t;
 		}
@@ -259,7 +273,7 @@ int mcp2200_send(int connectionID, uint8_t *data, int length){
 		if (l > MCP2200_CDC_BUFFERSIZE_OUT){
 			l = MCP2200_CDC_BUFFERSIZE_OUT;
 		}
-		r = libusb_bulk_transfer(connection_list[connectionID], MCP2200_CDC_ENDPOINT_OUT, &(data[index]), l, &t, MCP2200_HID_TRANSFER_TIMEOUT);
+		r = libusb_bulk_transfer(connection_list[connectionID], MCP2200_CDC_ENDPOINT_OUT, &(data[index]), l, &t, MCP2200_CDC_TRANSFER_TIMEOUT);
 		if (r != 0){
 			if (r == LIBUSB_ERROR_NO_DEVICE){
 				//Device is disconnected
