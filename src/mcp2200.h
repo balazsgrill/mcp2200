@@ -62,6 +62,7 @@ extern int mcp2200_hid_configure(int connectionID,
 		uint8_t config_alt_pins,
 		uint8_t IO_default_pins,
 		uint8_t config_alt_options,
+    /* Baud rate divisor. To calculate, use the following equation: =(12000000/desiredBaudRate)-1 */
 		uint16_t baudRate
 		);
 

@@ -38,7 +38,7 @@ int main(int argc, char** argv){
 			return 0;
 		}
 
-		r = mcp2200_hid_configure(connectionID, 0, 0, 0, 0, 1000);
+		r = mcp2200_hid_configure(connectionID, 0, 0, 0, 0, 1249);
 		if (r != 0){
 			printf("Configure error: %d\n", r);
 		}
