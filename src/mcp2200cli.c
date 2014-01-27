@@ -47,8 +47,11 @@ int main(int argc, char** argv){
 
 		int i;
 		int j;
+		int count;
 		uint8_t rcv_data[32];
-
+	
+		for(count=0;count<1000;count++){
+	
 		printf("Sending..\n");
 		r = mcp2200_send(connectionID, data, sendNum);
 		printf("result: %d\n", r);
@@ -62,7 +65,7 @@ int main(int argc, char** argv){
 			}
 		}
 		printf("\n");
-	
+		}
 
 	}else{
 		printf("Multiple devices, couldn't choose..");

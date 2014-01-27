@@ -168,8 +168,8 @@ int mcp2200_hid_configure(int connectionID,
 	buffer[4] = IO_bmap;
 	buffer[5] = config_alt_pins;
 	buffer[6] = config_alt_options;
-	buffer[7] = (uint8_t)((baudRate<<8)&0xFF);
-	buffer[8] = (uint8_t)(baudRate&0xFF);
+	buffer[7] = (uint8_t)(baudRate&0xFFu);
+	buffer[8] = (uint8_t)((baudRate>>8u)&0xFFu);
 
 	int t = 0;
 	int r = libusb_interrupt_transfer(connection_list[connectionID], MCP2200_HID_ENDPOINT_OUT, buffer, MCP2200_HID_REPORT_SIZE, &t, MCP2200_HID_TRANSFER_TIMEOUT);
