@@ -8,7 +8,7 @@
 #ifndef MCP2200_H_
 #define MCP2200_H_
 
-#include <libusb.h>
+#include <libusb-1.0/libusb.h>
 
 #define MCP2200_VENDOR_ID	0x04d8
 #define MCP2200_PRODUCT_ID	0x00df

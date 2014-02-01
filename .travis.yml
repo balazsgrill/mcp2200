@@ -1,9 +1,5 @@
 language: c
-install: chmod +x installdeps && ./installdeps
-before_script: make libusbx-latest
-script: make
-compiler: 
- - gcc
- - "gcc -m32"
- - i586-mingw32msvc-gcc
+install: sudo apt-get install libudev-dev libusb-1.0-0-dev
+script: make all
+compiler: gcc
 
