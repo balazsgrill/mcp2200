@@ -235,10 +235,6 @@ int mcp2200_receive(int connectionID, uint8_t *data, int length, int* received){
 			r = 0;
 		}else
 		if (r != 0){
-			if (r == LIBUSB_ERROR_TIMEOUT){
-				index += t;
-				remain -= t;
-			}else
 			if (r == LIBUSB_ERROR_NO_DEVICE){
 				//Device is disconnected
 				closeDevice(connectionID);
@@ -274,6 +270,11 @@ int mcp2200_send(int connectionID, uint8_t *data, int length){
 			l = MCP2200_CDC_BUFFERSIZE_OUT;
 		}
 		r = libusb_bulk_transfer(connection_list[connectionID], MCP2200_CDC_ENDPOINT_OUT, &(data[index]), l, &t, MCP2200_CDC_TRANSFER_TIMEOUT);
+		if (r == LIBUSB_ERROR_TIMEOUT){
+			index += t;
+			remain -= t;
+			r = 0;
+		}else
 		if (r != 0){
 			if (r == LIBUSB_ERROR_NO_DEVICE){
 				//Device is disconnected
