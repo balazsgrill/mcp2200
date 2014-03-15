@@ -10,8 +10,24 @@
 
 #include "mcp2200.h"
 
-static uint8_t data[] = {5 , 5, 5, 5, 5}; 
-static int sendNum = 5;
+static uint8_t data[64]; 
+int sendNum = 0;
+
+static uint8_t calcCheck(uint8_t id, uint8_t data){
+    uint8_t check = 0xFu;
+    check -= (id + (data & 0xFu) + ((data & 0xF0u)>>4u));
+    check = check & 0xFu;
+    return check;
+}
+
+void com_sendMsg(uint8_t id, uint8_t value){
+    uint8_t check = calcCheck(id, value);
+    uint8_t h = (check << 4u) + (id & 0xFu);
+    
+    data[sendNum] = h;
+    data[sendNum+1] = value;
+    sendNum += 2;
+}
 
 int main(int argc, char** argv){
 
@@ -43,18 +59,22 @@ int main(int argc, char** argv){
 			printf("Configure error: %d\n", r);
 		}
 
-
+com_sendMsg(0,5);
+com_sendMsg(1,255);
+com_sendMsg(2,255);
 
 		int i;
 		int j;
 		int count;
 		uint8_t rcv_data[32];
 	
-		for(count=0;count<1000;count++){
-	
+
 		printf("Sending..\n");
 		r = mcp2200_send(connectionID, data, sendNum);
 		printf("result: %d\n", r);
+
+		for(count=0;count<20;count++){
+	
 		
 		printf("Receive..\n");
 		r = mcp2200_receive(connectionID, rcv_data, 32, &i);
