@@ -59,8 +59,11 @@ extern int mcp2200_hid_set_clear_output(int connectionID, uint8_t set_bmap, uint
  */
 extern int mcp2200_hid_configure(int connectionID,
 		uint8_t IO_bmap,
+    /*   SSPNG, USBCFG,   N/A,    N/A,  RxLED,  TxLED,    N/A,    N/A */
 		uint8_t config_alt_pins,
 		uint8_t IO_default_pins,
+    /*   RxTGL,  TxTGL,  LEDX,    N/A,    N/A,    N/A, INVERT,HW_FLOW */
+    /*   LEDX=0 - blink fast(100ms), LEDX=1 - blink slow (200ms) */
 		uint8_t config_alt_options,
     /* Baud rate divisor. To calculate, use the following equation: =(12000000/desiredBaudRate)-1 */
 		uint16_t baudRate

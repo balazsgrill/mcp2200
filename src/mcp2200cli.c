@@ -54,7 +54,7 @@ int main(int argc, char** argv){
 			return 0;
 		}
 
-		r = mcp2200_hid_configure(connectionID, 0, 0, 0, 0, 1249);
+		r = mcp2200_hid_configure(connectionID, 0b00000000/*I/O direction*/, 0b11001100/*alternate pins*/, 0b00000000/*default pin state*/, 0b01000000/*alternate options*/, 1249);
 		if (r != 0){
 			printf("Configure error: %d\n", r);
 		}
