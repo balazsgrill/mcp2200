@@ -121,7 +121,7 @@ int mcp2200_hid_read_ee(int connectionID, uint8_t address, uint8_t *data){
 	if (rbuffer[0] != MCP2200_HID_COMMAND_READ_EE) return MCP2200_INVALID_RESPONSE;
 	if (rbuffer[1] != address) return MCP2200_INVALID_RESPONSE;
 
-	(*data) = (rbuffer[2]);
+	(*data) = (rbuffer[3]);
 	return 0;
 }
 
